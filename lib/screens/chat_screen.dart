@@ -21,7 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 //Implement logout functionality
               }),
         ],
-        title: Text('⚡️Chat'),
+        title: Text('Flash Chat'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
