@@ -1,7 +1,8 @@
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../components/rounded_button.dart';
+import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -11,6 +12,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  String email;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
               onChanged: (value) {
+                email = value;
                 //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
@@ -41,7 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 8.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
+              obscureText: true,
               onChanged: (value) {
+                password = value;
                 //Do something with the user input.
               },
               decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password.'),
@@ -52,9 +63,15 @@ class _LoginScreenState extends State<LoginScreen> {
             RoundedButton(
                 colorButton: Colors.lightBlueAccent,
                 textButton: "Log in",
-                onPressedFunction: () {
-                  //Implement login functionality.
-
+                onPressedFunction: () async {
+                  try{
+                    final loginUser = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                    if(loginUser != null){
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                  }catch(e){
+                    print(e);
+                  }
                   //Navigator.pushNamed(context, LoginScreen.id);
                 }),
           ],
